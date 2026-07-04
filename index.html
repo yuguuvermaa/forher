@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<!--
+  ─────────────────────────────────────────────────────────────────────────
+  FOR HER, a quiet, sincere page.
+  HOW TO PERSONALIZE (everything you touch is a [bracket] in the text):
+    1. Search this file for [  and replace each placeholder with your own words.
+    2. Photos:   find  <img ... data-photo>  and set src="your-photo.jpg".
+                 A video works too: swap the <img> for a <video> (see notes near the gallery).
+    3. Music:    find  <audio id="song">  and set src to your song file (mp3/m4a).
+                 Use *your* song, the one that means something. It stays OFF until she taps Begin.
+    4. Deploy:   this is one file. Open it directly, or drop it on GitHub Pages / Netlify / Vercel.
+  Keep the tone yours. The words below are a starting point, not a script.
+  ─────────────────────────────────────────────────────────────────────────
+-->
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For [Her Name]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:      #14121A;   /* deep near-black plum, after dusk        */
+    --ink-2:    #1E1B26;   /* raised panels                            */
+    --ink-3:    #26222F;   /* borders / seams                          */
+    --bone:     #F3EEE6;   /* warm off-white, primary text            */
+    --muted:    #9C9488;   /* taupe, secondary text                   */
+    --gold:     #C9A96A;   /* muted antique gold, the one accent      */
+    --rose:     #C98A86;   /* dusty rose, used very sparingly         */
+    --measure:  40rem;     /* reading column                           */
+    --ease:     cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:"Spectral", Georgia, serif;
+    font-weight:300;
+    font-size:1.075rem;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* ambient light-field sits behind everything */
+  #field{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .wrap{ position:relative; z-index:1; }
+
+  /* ── type ─────────────────────────────────────────── */
+  h1,h2,h3{ font-family:"Fraunces", Georgia, serif; font-weight:400; line-height:1.15; margin:0; }
+  h1{ font-size:clamp(2.6rem, 8vw, 4.6rem); letter-spacing:-.01em; }
+  h2{ font-size:clamp(1.8rem, 5vw, 2.9rem); letter-spacing:-.005em; }
+  h3{ font-size:1.35rem; }
+  em, .em{ font-style:italic; color:var(--bone); }
+  .eyebrow{
+    font-family:"Fraunces", serif;
+    font-size:.74rem; font-weight:500; font-style:normal;
+    letter-spacing:.34em; text-transform:uppercase;
+    color:var(--gold); margin:0 0 1.6rem;
+  }
+  a{ color:var(--gold); }
+
+  /* ── layout ───────────────────────────────────────── */
+  section{ padding:min(16vh,9rem) 1.5rem; }
+  .inner{ max-width:var(--measure); margin:0 auto; }
+  .lede{ font-size:clamp(1.15rem,2.4vw,1.35rem); color:var(--bone); }
+  p{ margin:0 0 1.35rem; color:#DDD6CC; }
+  p.soft{ color:var(--muted); }
+  .rule{ width:44px; height:1px; background:var(--gold); opacity:.6; margin:2.4rem 0; border:0; }
+
+  /* ── entrance overlay ─────────────────────────────── */
+  #gate{
+    position:fixed; inset:0; z-index:50;
+    background:radial-gradient(120% 90% at 50% 30%, #1b1824 0%, var(--ink) 70%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:2rem;
+    transition:opacity 1.1s var(--ease), visibility 1.1s;
+  }
+  #gate.gone{ opacity:0; visibility:hidden; }
+  #gate .eyebrow{ margin-bottom:2rem; }
+  #gate .g-name{ font-family:"Fraunces",serif; font-size:clamp(2.4rem,9vw,4rem); font-weight:300; font-style:italic; }
+  #gate .g-sub{ color:var(--muted); max-width:26rem; margin:1.4rem auto 2.8rem; }
+  .begin{
+    font-family:"Fraunces",serif; font-size:.8rem; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--bone); background:transparent; cursor:pointer;
+    border:1px solid rgba(201,169,106,.5); border-radius:999px;
+    padding:1rem 2.4rem; transition:all .5s var(--ease); text-decoration:none;
+  }
+  .begin:hover, .begin:focus-visible{ border-color:var(--gold); background:rgba(201,169,106,.08); letter-spacing:.36em; }
+  .gate-note{ color:var(--muted); font-size:.8rem; margin-top:1.6rem; font-style:italic; }
+
+  /* ── opening hero ─────────────────────────────────── */
+  .hero{ min-height:88vh; display:flex; align-items:center; }
+  .hero h1 span{ display:block; }
+  .hero h1 .l2{ font-style:italic; font-weight:300; color:var(--gold); }
+
+  /* ── anniversary marker ───────────────────────────── */
+  .marker{ text-align:center; }
+  .marker .date{ font-family:"Fraunces",serif; font-style:italic; color:var(--rose); font-size:1.05rem; letter-spacing:.02em; }
+  .marker .count{ font-family:"Fraunces",serif; font-size:clamp(3rem,12vw,6rem); font-weight:300; line-height:1; margin:.6rem 0 .3rem; }
+  .marker .count small{ display:block; font-size:.85rem; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); font-style:normal; margin-top:1rem; }
+
+  /* ── timeline ─────────────────────────────────────── */
+  .timeline{ list-style:none; margin:0; padding:0; position:relative; }
+  .timeline::before{
+    content:""; position:absolute; left:9px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(var(--gold), rgba(201,169,106,.15));
+    transform:scaleY(var(--draw,0)); transform-origin:top; transition:transform 1.4s var(--ease);
+  }
+  .t-item{ position:relative; padding:0 0 2.6rem 2.6rem; }
+  .t-item:last-child{ padding-bottom:0; }
+  .t-item::before{
+    content:""; position:absolute; left:4px; top:.55rem; width:11px; height:11px; border-radius:50%;
+    background:var(--ink); border:1px solid var(--gold);
+  }
+  .t-when{ font-family:"Fraunces",serif; font-style:italic; color:var(--gold); font-size:.95rem; }
+  .t-what{ margin:.2rem 0 0; }
+  .t-what b{ font-weight:400; font-family:"Fraunces",serif; }
+
+  /* ── memories ─────────────────────────────────────── */
+  .gallery{ display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+  @media(min-width:620px){ .gallery{ grid-template-columns:repeat(3,1fr); } }
+  figure{ margin:0; }
+  .frame{
+    position:relative; aspect-ratio:3/4; border-radius:2px; overflow:hidden;
+    background:linear-gradient(150deg,var(--ink-2),var(--ink-3));
+    border:1px solid var(--ink-3);
+  }
+  .frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .frame .ph{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:var(--muted); font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; text-align:center; padding:1rem; }
+  figcaption{ color:var(--muted); font-style:italic; font-size:.9rem; margin-top:.6rem; }
+
+  /* ── things i never stopped noticing ──────────────── */
+  .noticed{ list-style:none; margin:0; padding:0; }
+  .noticed li{ position:relative; padding:0 0 1.15rem 1.7rem; color:#DDD6CC; }
+  .noticed li:last-child{ padding-bottom:0; }
+  .noticed li::before{
+    content:""; position:absolute; left:0; top:.78rem; width:6px; height:6px; border-radius:50%;
+    background:var(--gold); opacity:.75;
+  }
+
+  /* ── letters (unseal one by one) ──────────────────── */
+  .letters{ display:grid; gap:1rem; }
+  .letter{
+    background:var(--ink-2); border:1px solid var(--ink-3); border-radius:3px;
+    overflow:hidden; transition:border-color .5s var(--ease);
+  }
+  .letter[open]{ border-color:rgba(201,169,106,.4); }
+  .letter summary{
+    list-style:none; cursor:pointer; padding:1.3rem 1.5rem;
+    display:flex; align-items:center; gap:1rem;
+    font-family:"Fraunces",serif; font-style:italic; color:var(--bone);
+    transition:color .4s var(--ease);
+  }
+  .letter summary::-webkit-details-marker{ display:none; }
+  .letter summary:hover{ color:var(--gold); }
+  .seal{
+    flex:0 0 auto; width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--gold); color:var(--gold);
+    display:flex; align-items:center; justify-content:center; font-size:.9rem;
+    transition:transform .5s var(--ease), background .5s var(--ease);
+  }
+  .letter[open] .seal{ transform:rotate(-8deg); background:rgba(201,169,106,.12); }
+  .letter .body{ padding:0 1.5rem 1.6rem; }
+  .letter .body p:last-child{ margin-bottom:0; }
+  .summary-hint{ margin-left:auto; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-style:normal; }
+  .letter[open] .summary-hint{ opacity:0; }
+
+  /* ── commitment list ──────────────────────────────── */
+  .vows{ list-style:none; margin:0; padding:0; }
+  .vows li{ padding:1.2rem 0; border-top:1px solid var(--ink-3); display:flex; gap:1.1rem; align-items:baseline; }
+  .vows li:first-child{ border-top:0; }
+  .vows .n{ font-family:"Fraunces",serif; color:var(--gold); font-size:.85rem; letter-spacing:.1em; flex:0 0 auto; width:1.8rem; }
+  .vows .v b{ font-weight:400; font-family:"Fraunces",serif; }
+  .vows .v span{ display:block; color:var(--muted); font-size:.95rem; margin-top:.2rem; }
+
+  /* ── close ────────────────────────────────────────── */
+  .close{ text-align:center; }
+
+  /* ── finale (blank screen, then one line fades in) ── */
+  .void{ height:18vh; }
+  .finale{
+    min-height:88vh; display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:10vh 1.5rem;
+  }
+  .finale .inner{ max-width:32rem; }
+  .finale-line{
+    font-family:"Fraunces",serif; font-style:italic; font-weight:300;
+    font-size:clamp(1.3rem,3.6vw,1.95rem); line-height:1.5; color:var(--bone);
+    margin:0 0 1.15rem;
+    opacity:0; transform:translateY(14px);
+    transition:opacity 1.7s var(--ease), transform 1.7s var(--ease);
+  }
+  .finale-line:last-child{ color:var(--gold); margin-bottom:0; }
+  .finale.in .finale-line{ opacity:1; transform:none; }
+  .finale.in .finale-line:nth-child(2){ transition-delay:1.3s; }
+  .finale.in .finale-line:nth-child(3){ transition-delay:2.7s; }
+
+  /* ── music toggle ─────────────────────────────────── */
+  #music{
+    position:fixed; bottom:1.4rem; right:1.4rem; z-index:40;
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(30,27,38,.8); backdrop-filter:blur(8px);
+    border:1px solid var(--ink-3); color:var(--muted); cursor:pointer;
+    display:none; align-items:center; justify-content:center;
+    transition:all .4s var(--ease);
+  }
+  #music.show{ display:flex; }
+  #music:hover{ color:var(--gold); border-color:rgba(201,169,106,.4); }
+  #music .bars{ display:flex; gap:2px; align-items:flex-end; height:14px; }
+  #music .bars i{ width:2px; background:currentColor; height:4px; border-radius:2px; }
+  #music.playing .bars i{ animation:eq .9s ease-in-out infinite; }
+  #music .bars i:nth-child(2){ animation-delay:.15s } #music .bars i:nth-child(3){ animation-delay:.3s } #music .bars i:nth-child(4){ animation-delay:.45s }
+  @keyframes eq{ 0%,100%{height:4px} 50%{height:14px} }
+
+  /* ── scroll reveal (only when JS on) ──────────────── */
+  .js .reveal{ opacity:0; transform:translateY(26px); transition:opacity 1.1s var(--ease), transform 1.1s var(--ease); }
+  .js .reveal.in{ opacity:1; transform:none; }
+
+  /* ── accessibility floor ──────────────────────────── */
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radius:2px; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .js .reveal{ opacity:1; transform:none; }
+    .timeline::before{ transform:scaleY(1); }
+    .finale-line{ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ambient atmosphere -->
+<canvas id="field" aria-hidden="true"></canvas>
+
+<!-- entrance -->
+<div id="gate">
+  <p class="eyebrow">this one is only for you</p>
+  <div class="g-name">gugluu</div>
+  <p class="g-sub">There are some things I said badly, or not at all. So I put them somewhere quiet, where you can read them at your own pace.</p>
+  <a href="#start" class="begin" id="beginBtn">Begin</a>
+  <p class="gate-note">turn your sound on, if you'd like a song is playing</p>
+</div>
+
+<!-- your song: replace src. Stays silent until Begin. -->
+<audio id="song" loop preload="auto" src="song.mp3"></audio>
+
+<button id="music" aria-label="Toggle music">
+  <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+</button>
+
+<main class="wrap" id="start">
+
+  <!-- 1 · OPENING, take responsibility for the impact, not just the date -->
+  <section class="hero">
+    <div class="inner">
+      <p class="eyebrow reveal">First, the truth</p>
+      <h1 class="reveal">
+        <span>This isn't about one missed anniversary. It's about the person I haven't been these</span>
+        <span class="l2">past few months.</span>
+      </h1>
+      <hr class="rule reveal">
+      <p class="lede reveal">I forgot to show up the way you deserved, not only on our anniversary, but over these last few months. You told me, more than once, that it felt like I'd drifted, that you weren't getting enough of me. You were right, and I'm reallyy sorry.</p>
+      <p class="reveal">I'm not writing this to explain it away or to make you feel bad for being hurt. You get to be hurt. I just want you to know I finally understand what I did, and that I looked straight at it instead of past it.</p>
+    </div>
+  </section>
+
+  <!-- 2 · THE ANNIVERSARY, celebrate it, belatedly, with dignity -->
+  <section>
+    <div class="inner marker reveal">
+      <p class="eyebrow">The day I let slip by</p>
+      <p class="date">May 25, the day it began</p>
+      <div class="count">13<small>months of us</small></div>
+      <hr class="rule" style="margin-inline:auto;">
+      <p>happiesttt anniversaryy meri jaan🥺. A little late, and said the way I should have said it the first time: I'm glad it's you. 13 months ago I got something I didn't know how to deserve yet, and everyday i just thank god that i've got you.</p>
+    </div>
+  </section>
+
+  <!-- 3 · TIMELINE, a real sequence, so numbering/dates earn their place -->
+  <section>
+    <div class="inner">
+      <p class="eyebrow reveal">How we got here</p>
+      <h2 class="reveal">Us, in order.</h2>
+      <hr class="rule reveal">
+      <ol class="timeline reveal" id="timeline">
+        <li class="t-item">
+          <div class="t-when">November 2024</div>
+          <p class="t-what"><b>The first time.</b> we started talking properly, and i just couldn't control my heart when you looked at me, the way you talked to me, the way we had our conversations, the way you listened to me blabber.</p>
+        </li>
+        <li class="t-item">
+          <div class="t-when">March 2025</div>
+          <p class="t-what"><b>Our first "us" moment.</b> I confessed to you in metro, i told you everything that was going on, and everything took a big turn, your every action started affecting me and for the first time i felt the true love</p>
+        </li>
+        <li class="t-item">
+          <div class="t-when">25th May 2025, 01:20 am</div>
+          <p class="t-what"><b>The Big Day.</b>  when my life changed completely and i became the luckiest person in the entire universe, i had never been loved the way you loved me, you became my world</p>
+        </li>
+        <li class="t-item">
+          <div class="t-when">April-June 2026</div>
+          <p class="t-what"><b>Past few months.</b> last few months have been the hardest, we've had numerous disagreements and misunderstandings and we've never left each other's side. I've done loads of mistakes and there isn't a day i don't regret, i'm really sorry babyy, i'll never stop working on us. </p>
+        </li>
+        <li class="t-item">
+          <div class="t-when">, 5 July 2026</div>
+          <p class="t-what"><b>Me, trying to do better.</b> Which is where this page comes in.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4 · MEMORIES, swap src on each <img>. For video: replace <img> with
+       <video src="clip.mp4" muted loop playsinline controls></video> -->
+  <section>
+    <div class="inner">
+      <p class="eyebrow reveal">Moments I'll never forget.</p>
+      <h2 class="reveal">A few of the ones I keep.</h2>
+      <hr class="rule reveal">
+      <div class="gallery reveal">
+        <figure>
+          <div class="frame"><img data-photo src="img1.jpeg" alt="our first photo ever"><span class="ph">your photo →<br>img1.jpeg</span></div>
+          <figcaption>our first photo ever</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img data-photo src="img2.jpeg" alt="your birthday just after i confessed"><span class="ph">your photo →<br>img2.jpeg</span></div>
+          <figcaption>Your first birthday just after i confessed and me being obsessed</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img data-photo src="img3.jpeg" alt="[what this photo is]"><span class="ph">your photo →<br>img3.jpeg</span></div>
+          <figcaption>me still being obseesed on your next birthday</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img data-photo src="img4.jpeg" alt="[what this photo is]"><span class="ph">your photo →<br>img4.jpeg</span></div>
+          <figcaption>the first photo taken on my new phone was ourss</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img data-photo src="img5.jpeg" alt="[what this photo is]"><span class="ph">your photo →<br>img5.jpeg</span></div>
+          <figcaption>us always laughing on our jokess</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img data-photo src="img6.jpeg" alt="[what this photo is]"><span class="ph">your photo →<br>img6.jpeg</span></div>
+          <figcaption>the smile I'll never get tired of</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · THINGS I NEVER STOPPED NOTICING, the small, specific proof -->
+  <section>
+    <div class="inner">
+      <p class="eyebrow reveal">even when i wasn't showing up</p>
+      <h2 class="reveal">the things i never stopped noticing.</h2>
+      <hr class="rule reveal">
+      <p class="soft reveal">i wasn't as present as i should've been. but i want you to know i never stopped watching, never stopped keeping the little things about you.</p>
+      <ul class="noticed reveal">
+        <li>the way you laugh at my unfunny jokes.</li>
+        <li>how you take care of me even if we've had a fight.</li>
+        <li>the way you notice that i'm looking at you and then you blush.</li>
+        <li>how you remember always asking if i've had my food.</li>
+        <li>the way you sleep on my shoulder and it makes me feel like the most luckiest and loved person in the world.</li>
+      </ul>
+      <p class="reveal" style="margin-top:1.8rem;">i noticed all of it. i just went quiet about saying it out loud. i won't anymore.</p>
+    </div>
+  </section>
+
+<!-- 6 · IF I COULD HAVE ONE MORE CHANCE -->
+<section>
+  <div class="inner reveal">
+    <p class="eyebrow">If I had one more chance</p>
+    <h2>If I could do our 13th month anniversary again.</h2>
+    <hr class="rule">
+
+    <p>
+      I'd wish you before the day even began. I'd remind you how grateful I am for
+      every month we've spent together and how lucky I still feel that you're the
+      person I get to love.
+    </p>
+
+    <p>
+      I'd still prepare your Emma interview documents. I'd still spend hours making
+      sure you walked into that interview feeling confident because seeing you succeed
+      makes me genuinely happy. But I'd make sure that, through all of it, you never
+      had to wonder whether I remembered us.
+    </p>
+
+    <p>
+      I can't go back and change that day. I can't erase the hurt I caused or the
+      disappointment you felt while waiting for something that should've come from me
+      without a reminder. But I can make sure that the next chapters of our story are
+      written differently, not because I promised they would be, but because I choose
+      to make them different every single day.
+    </p>
+  </div>
+</section>
+
+  <!-- 7 · LETTERS, <details> so they open one by one, and work with no JS -->
+  <section>
+    <div class="inner">
+      <p class="eyebrow reveal">Say the quiet things</p>
+      <h2 class="reveal">Letters, if you want them.</h2>
+      <hr class="rule reveal">
+      <p class="soft reveal">Open these in any order, or not at all. There's no right way to read them.</p>
+      <div class="letters reveal">
+        <details class="letter">
+          <summary><span class="seal">i</span>What I actually did<span class="summary-hint">open</span></summary>
+          <div class="body">
+            <p>I spent a lot of time thinking about where everything started slipping, and I realised it wasn't just one forgotten anniversary. It was all the little moments before that.
+
+Somewhere along the way, I became so occupied with work, responsibilities, travelling, trying to improve myself and figuring life out that I unknowingly stopped giving enough of myself to the person who mattered the most. I never stopped loving you, but I stopped showing that love in the way you deserved to feel it.
+
+You kept telling me that my priorities had changed. Every time, I thought, "No, she's still my biggest priority." But if the person you love keeps feeling that way, then somewhere your actions are saying something different from your heart. That's on me.
+
+The anniversary wasn't painful because I forgot a date. It was painful because I made you feel like something that mattered deeply to you had slipped from my mind. You shouldn't have had to wait for a wish. You shouldn't have had to remind me. That memory should have lived in my heart before it ever needed to live in my calendar.
+
+I'm not writing this to defend myself or to tell you how guilty I feel. I'm writing this because I finally understand what you were trying to tell me these past few months, and I'm truly sorry that it took me this long to understand it.
+</p>
+          </div>
+        </details>
+        <details class="letter">
+          <summary><span class="seal">ii</span>What I imagine it felt like<span class="summary-hint">open</span></summary>
+          <div class="body">
+            <p>I don't know exactly what was going through your heart, but I've been trying to imagine it.
+
+Maybe it felt like you were slowly becoming someone who had to ask for my time instead of naturally receiving it.
+
+Maybe every time I got busy or distracted, it made you wonder whether I still remembered the little things that used to make us... us.
+
+Maybe when our anniversary passed without a word from me, it wasn't just disappointment. Maybe it confirmed a fear that had already been growing inside you, that you weren't getting the same Yuri anymore.
+
+When you told me, "If I wouldn't have said anything, ten days would've passed and you still wouldn't have remembered," that sentence has been replaying in my head ever since. I can't imagine how lonely that must have felt.
+
+And even after you told me you were hurt, I kept talking about how guilty I was instead of simply sitting with your pain. Looking back, I realise that wasn't what you needed from me. You needed me to understand you first.
+
+You have every right to feel hurt. I don't want to take that away from you. I just hope that one day, through what I do from here, those feelings become memories instead of your reality.
+</p>
+          </div>
+        </details>
+        <details class="letter">
+          <summary><span class="seal">iii</span>What I want the next months to be<span class="summary-hint">open</span></summary>
+          <div class="body">
+            <p>Even during the months where I wasn't being the boyfriend you deserved, there was never a single day where I stopped noticing you.
+
+I notice how you always worry about whether I've eaten, even when you're upset with me.
+
+I notice how you keep telling me to sleep on time, take care of myself and stop being so harsh on my own body.
+
+I notice the excitement in your voice whenever something good happens to me, and how genuinely happy you become for my smallest wins.
+
+I notice how much effort you quietly put into us without making noise about it. Like making something for our anniversary and waiting because you wanted me to remember on my own. Reading that broke my heart, because I realised how much love was sitting there waiting for me, and I wasn't there when it needed me.
+
+You once promised me that no matter how hard things got, we'd always choose each other. You kept that promise, even through all these misunderstandings.
+
+Now it's my turn.
+
+Not by saying "I'll change" a hundred more times.
+
+Not by asking you to forgive me because I made this website.
+
+But by making sure that months from now, when you think back to this moment, you remember it as the point where I finally started becoming the person you always believed I could be.
+
+I love you, Gugluu. I always have. And now, more than anything, I want my actions to become worthy of those words.
+</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+<section>
+  <div class="inner reveal">
+    <p class="eyebrow">Something I never thanked you for</p>
+    <h2>Thank you for choosing us.</h2>
+    <hr class="rule">
+
+    <p>
+      Looking back, I realised something. Every time something hurt you, you didn't
+      quietly walk away. You told me. You tried to make me understand. Even when we
+      argued, even when you were disappointed, you still chose to have those difficult
+      conversations because somewhere in your heart, you still believed we could become
+      better.
+    </p>
+
+    <p>
+      I know that wasn't easy. It would've been much simpler to stop caring, but you
+      didn't. You stayed, you explained, you forgave me more times than I deserved,
+      and you kept hoping I'd understand what you were trying to tell me. You always wanted the best for me, even on the days when I wasn't being my best for you.
+    </p>
+
+    <p>
+      Thank you for not giving up on us when things became difficult. I don't see that
+      as something I'm entitled to, I see it as one of the biggest acts of love you've
+      ever shown me. I only hope that, from here onwards, I become someone who makes
+      that choice feel worth it.
+    </p>
+  </div>
+</section>
+
+  <!-- 9 · COMMITMENT, concrete, repeatable actions, not promises -->
+<section>
+  <div class="inner">
+    <p class="eyebrow reveal">Words are easy, so here's the plan</p>
+    <h2 class="reveal">Small things. Every day.</h2>
+    <hr class="rule reveal">
+    <p class="soft reveal">
+      I wanted to make this because you deserve every bit of effort I can give. But I also know this page isn't what will rebuild your trust. The real apology starts after this page ends. These aren't promises I expect you to believe today, they're the little things I want you to see through my actions, every single day.
+    </p>
+
+    <ul class="vows reveal">
+      <li>
+        <span class="n">01</span>
+        <span class="v">
+          <b>You should never have to remind me of the moments that belong to us.</b>
+          <span>
+            Our anniversaries, your important days, your interviews, your achievements, the little milestones we create together, I want you to feel remembered because I remembered, not because you had to remind me.
+          </span>
+        </span>
+      </li>
+
+      <li>
+        <span class="n">02</span>
+        <span class="v">
+          <b>You won't have to compete with everything else in my life.</b>
+          <span>
+            Work, projects, travelling, college, responsibilities... all of them matter. But none of them should ever make you feel like you've become second. If life gets busy, I'll communicate instead of disappearing.
+          </span>
+        </span>
+      </li>
+
+      <li>
+        <span class="n">03</span>
+        <span class="v">
+          <b>I'll listen before I explain.</b>
+          <span>
+            One of my biggest mistakes has been trying to explain myself before fully understanding what you were feeling. I want my first response to be listening to you, not defending myself.
+          </span>
+        </span>
+      </li>
+
+      <li>
+        <span class="n">04</span>
+        <span class="v">
+          <b>Love will be shown in the little things.</b>
+          <span>
+            Not only on anniversaries or through surprises like this. Through everyday conversations, remembering the little things you tell me, making time for us, and making sure you never have to question where you stand in my life.
+          </span>
+        </span>
+      </li>
+
+      <li>
+        <span class="n">05</span>
+        <span class="v">
+          <b>You don't have to believe these words today.</b>
+          <span>
+            Trust shouldn't come back because I wrote this page. It should come back only if my actions quietly prove these words right over time. That's the only way they'll ever mean anything.
+          </span>
+        </span>
+      </li>
+    </ul>
+
+    <p class="reveal" style="margin-top:2rem;">
+      I don't expect this page to make everything okay. I only hope that one day, when you look back at today, you'll remember it as the day I stopped making promises and started becoming the person I always wanted to be for you.
+    </p>
+  </div>
+</section>
+
+<!-- 10 · CLOSE -->
+<section>
+  <div class="inner close reveal">
+    <p class="eyebrow" style="text-align:center;">One last thing</p>
+    <h2>Thank you.</h2>
+    <hr class="rule" style="margin-inline:auto;">
+
+    <p>
+      I'm not asking you to forgive me today, tomorrow, or because of this page.
+      I just wanted you to know that I finally understood what you've been trying
+      to tell me all these months.
+    </p>
+
+    <p>
+      If one day you feel my actions have become worthy of your trust again,
+      that'll mean more to me than anything I could ever write here.
+    </p>
+
+    <p class="soft">
+      Thank you for loving me, even on the days when I made it difficult.
+    </p>
+  </div>
+</section>
+
+<div class="void" aria-hidden="true"></div>
+
+<section class="finale">
+  <div class="inner">
+
+    <p class="finale-line">
+      You once told me that love should get better with time.
+    </p>
+
+    <p class="finale-line">
+      Somewhere along the way, I forgot that.
+    </p>
+
+    <p class="finale-line">
+      From today, I want my actions to remind you.
+    </p>
+
+    <p class="finale-line" style="margin-top:5rem;">
+      Happiestttt 13 months, gugluu. ❤️💍, thankk youu for staying with me always🥺🥺
+    </p>
+
+  </div>
+</section>
+
+<script>
+  document.documentElement.classList.remove('no-js');
+  document.documentElement.classList.add('js');
+
+  // ── entrance + music unlock ───────────────────────────
+  var gate  = document.getElementById('gate');
+  var begin = document.getElementById('beginBtn');
+  var song  = document.getElementById('song');
+  var music = document.getElementById('music');
+
+  function startMusic(){
+    if(!song.getAttribute('src') || song.getAttribute('src').indexOf('[') === 0) return; // no song set yet
+    song.volume = 0;
+    var p = song.play();
+    if(p && p.then){ p.then(fadeIn).catch(function(){ /* browser blocked; toggle stays available */ }); }
+    else fadeIn();
+  }
+  function fadeIn(){
+    music.classList.add('playing');
+    var t = setInterval(function(){
+      song.volume = Math.min(0.55, song.volume + 0.03);
+      if(song.volume >= 0.55) clearInterval(t);
+    }, 90);
+  }
+
+  begin.addEventListener('click', function(){
+    gate.classList.add('gone');
+    music.classList.add('show');
+    startMusic();
+    // let the anchor scroll happen naturally
+  });
+
+  music.addEventListener('click', function(){
+    if(song.paused){ song.play(); music.classList.add('playing'); }
+    else { song.pause(); music.classList.remove('playing'); }
+  });
+
+  // ── scroll reveals ────────────────────────────────────
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        if(e.target.id === 'timeline') e.target.style.setProperty('--draw', 1);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold:0.16 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // ── finale: fade the closing line in once it's centered ──
+  var fin = document.querySelector('.finale');
+  if(fin){
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io2.unobserve(e.target); }
+      });
+    }, { threshold:0.4 });
+    io2.observe(fin);
+  }
+
+  // ── hide photo placeholders once a real image loads ───
+  document.querySelectorAll('img[data-photo]').forEach(function(img){
+    function ok(){ var ph = img.parentNode.querySelector('.ph'); if(ph) ph.style.display='none'; }
+    if(img.complete && img.naturalWidth > 0) ok();
+    img.addEventListener('load', function(){ if(img.naturalWidth>0) ok(); });
+  });
+
+  // ── ambient light-field (calm, low count; off if reduced-motion) ──
+  (function(){
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var c = document.getElementById('field'), x = c.getContext('2d'), w, h, pts;
+    function size(){ w = c.width = innerWidth; h = c.height = innerHeight; }
+    function make(){
+      pts = [];
+      var n = Math.min(46, Math.round(w*h/34000));
+      for(var i=0;i<n;i++) pts.push({
+        x:Math.random()*w, y:Math.random()*h,
+        r:Math.random()*1.4+0.3,
+        vx:(Math.random()-0.5)*0.12, vy:(Math.random()-0.5)*0.12,
+        a:Math.random()*0.4+0.1, tw:Math.random()*0.02+0.004
+      });
+    }
+    var gold = [201,169,106];
+    function frame(){
+      x.clearRect(0,0,w,h);
+      for(var i=0;i<pts.length;i++){
+        var p = pts[i];
+        p.x+=p.vx; p.y+=p.vy; p.a+=p.tw;
+        if(p.x<0)p.x=w; if(p.x>w)p.x=0; if(p.y<0)p.y=h; if(p.y>h)p.y=0;
+        var al = 0.12 + Math.abs(Math.sin(p.a))*0.35;
+        x.beginPath(); x.arc(p.x,p.y,p.r,0,6.29);
+        x.fillStyle='rgba('+gold[0]+','+gold[1]+','+gold[2]+','+al.toFixed(3)+')';
+        x.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    size(); make(); frame();
+    addEventListener('resize', function(){ size(); make(); });
+  })();
+</script>
+</body>
+</html>
